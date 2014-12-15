@@ -63,6 +63,8 @@ var gameMenu = {
         var button = new Item(100, 100, 250, 200, "#00FF00", "#00FFFF", "#0000FF");
         gameMenu.buttons.push(button);
 
+        gameMenu.drawSilhouette();
+
     },
 
     interactions: function(){
@@ -110,6 +112,17 @@ var gameMenu = {
 
         //Mirror
         gameMenu.ctxFront.fillRect((GAME_WIDTH - button.x2), button.y1, (button.x2 - button.x1),button.y2-button.y1);
+    },
+
+    drawSilhouette:  function(){
+        gameMenu.ctxFront.strokeStyle = "#000055";
+        gameMenu.ctxFront.beginPath();
+        gameMenu.ctxFront.moveTo(420,720);
+        gameMenu.ctxFront.quadraticCurveTo(420,515,535,505);
+        gameMenu.ctxFront.bezierCurveTo(545,255,680,255,680,505);
+        gameMenu.ctxFront.quadraticCurveTo(820,515,820,720);
+        gameMenu.ctxFront.lineWidth = 10;
+        gameMenu.ctxFront.stroke();
     },
 
     mainLoop: function(){

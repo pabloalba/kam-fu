@@ -38,10 +38,6 @@ var camera = {
                 camera.preInit(src);
             } else {
                 var diff = resemble(camera.baseImage).compareTo(src).kamfu().onComplete(camera.onSnapshot);
-                //~ var diff = resemble(camera.baseImage).compareTo(src).kamfu().onComplete(function onComplete(data){
-                    //~ document.getElementById("movementImage").src = data.getImageDataUrl();
-                //~ });
-
             }
         }
     },
