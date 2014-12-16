@@ -12,7 +12,9 @@
     </head>
     <body>
 
-
+        <div id="videoContainer">
+            <video id="video1" autoplay ></video>
+        </div>
 
 
 
@@ -20,20 +22,30 @@
             <canvas id="gameBackground" height="720" width="1280"></canvas>
         </div>
 
-        <div id="videoContainer">
-            <video id="video1" autoplay ></video>
-        </div>
+
 
         <div class="graphicsContainer">
             <canvas id="gameFront" height="720" width="1280"></canvas>
         </div>
 
+
+
         <label id="countDown" class="countDown">5</label>
 
-        <img id="backImage" src="img/background1.jpg" />
+        <img id="backImage" class="invisible" src="img/background1.jpg" />
+        <img id="silhouette" class="invisible" src="img/silhouette.png" />
+        <img id="ninjaActive" class="invisible" src="img/ninja_attack1.png" />
+        <img id="ninjaInactive" class="invisible" src="img/ninja_attack2.png" />
+        <img id="danceActive" class="invisible" src="img/dance1.png" />
+        <img id="danceInactive" class="invisible" src="img/dance2.png" />
+        <img id="simonActive" class="invisible" src="img/simon1.png" />
+        <img id="simonInactive" class="invisible" src="img/simon2.png" />
 
 
         <img id="movementImage" src="" />
+
+        <audio src="audio/fight.ogg" loop="true" autoplay="true"></audio>
+        <audio src="" id="effect"></audio>
 
     </body>
 </html>

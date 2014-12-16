@@ -7,17 +7,17 @@ var GAME_HEIGHT = 720;
 
 
 
-function Item (x1, y1, x2, y2, imageInactive, imageActive, sound) {
+function Item (x1, y1, x2, y2, colorInactive, colorActive1, colorActive2) {
     this.x1 = x1;
     this.x2 = x2;
     this.y1 = y1;
     this.y2 = y2;
     this.active = false;
-    this.imageInactive = imageInactive;
-    this.imageActive = imageActive;
+    this.colorInactive = colorInactive;
+    this.colorActive1 = colorActive1;
+    this.colorActive2 = colorActive2;
     this.activeTime = Number.MAX_VALUE;
     this.inactiveTime = 0;
-    this.sound = sound;
 
     this.scaledX1 = Math.round(x1 * IMAGE_WIDTH / GAME_WIDTH);
     this.scaledX2 = Math.round(x2 * IMAGE_WIDTH / GAME_WIDTH);
@@ -61,18 +61,13 @@ var gameMenu = {
         var img=document.getElementById("backImage");
         gameMenu.ctxBack.drawImage(img,0,0);
 
-        var button = new Item(100, 100, 360, 355, document.getElementById("danceActive"), document.getElementById("danceInactive"), 'audio/dance.ogg');
+        var button = new Item(100, 100, 250, 200, "#00FF00", "#00FFFF", "#0000FF");
         gameMenu.buttons.push(button);
 
-        button = new Item(920, 100, 1180, 355, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg');
-        gameMenu.buttons.push(button);
-
-
-        button = new Item(560, 0, 720, 145, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/menu.ogg');
+        button = new Item(1030, 100, 1180, 200, "#00FF00", "#00FFFF", "#0000FF");
         gameMenu.buttons.push(button);
 
         gameMenu.drawSilhouette();
-
 
     },
 
@@ -88,9 +83,7 @@ var gameMenu = {
                     }
                 } else {
                     button.setActive(active);
-                    gameMenu.activeButton = button;
-                    document.getElementById('effect').src = button.sound;
-                    document.getElementById('effect').play()
+                    gameMenu.activeButton = button
                 }
             } else {
                 button.setActive(active);
@@ -127,22 +120,19 @@ var gameMenu = {
     },
 
     drawButton: function(button){
-        var img;
         if (button.active){
-            if ((new Date().getTime() - button.activeTime) > 3000) {
-                //alert("Go");
-                img=button.imageActive;
+            if ((new Date().getTime() - button.activeTime) > 1500) {
+                gameMenu.ctxFront.fillStyle = button.colorActive2;
             } else {
-                img=button.imageActive;
+                gameMenu.ctxFront.fillStyle = button.colorActive1;
             }
         } else {
-            img=button.imageInactive;
+            gameMenu.ctxFront.fillStyle = button.colorInactive;
         }
 
 
         //Mirror
-        gameMenu.ctxFront.clearRect((GAME_WIDTH - button.x2), button.y1, 260, 255);
-        gameMenu.ctxFront.drawImage(img,(GAME_WIDTH - button.x2), button.y1);
+        gameMenu.ctxFront.fillRect((GAME_WIDTH - button.x2), button.y1, (button.x2 - button.x1),button.y2-button.y1);
     },
 
     drawSilhouette2:  function(){
@@ -161,7 +151,8 @@ var gameMenu = {
         gameMenu.ctxFront.drawImage(img,390,247);
 
 
-
+        var img=document.getElementById("ninja");
+        gameMenu.ctxFront.drawImage(img,90,347);
     },
 
     mainLoop: function(){

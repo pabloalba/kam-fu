@@ -32,6 +32,10 @@ var camera = {
 
     snapshot: function() {
         if (camera.localMediaStream) {
+            if (camera.startupTime == 0){
+                camera.startupTime = new Date().getTime();
+            }
+
             camera.ctx.drawImage(camera.video, 0, 0);
             var src = camera.canvas.toDataURL('image/webp');
             if (camera.initialized == false) {
@@ -48,7 +52,6 @@ var camera = {
     },
 
     setup: function(video, countDownElement, onSnapshot) {
-        camera.startupTime = new Date().getTime();
         camera.video = video;
         camera.countDownElement = countDownElement;
         camera.onSnapshot = onSnapshot;
@@ -58,6 +61,8 @@ var camera = {
         camera.canvas.width  = WIDTH;
         camera.canvas.height = HEIGHT;
         camera.canvas.style.display   = 'none';
+
+        countDownElement.left = (WIDTH / 2) - 95;
 
 
         camera.ctx = camera.canvas.getContext('2d');
@@ -86,6 +91,8 @@ var camera = {
             },
             camera.errorCallback
         );
+
+        window.setTimeout(camera.loop, 1000);
 
     }
 
