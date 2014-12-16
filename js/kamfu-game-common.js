@@ -152,7 +152,7 @@ var gameCommon = {
 
     drawSilhouette:  function(){
         var img=document.getElementById("silhouette");
-        gameCommon.ctxBack.drawImage(img,390,247);
+        gameCommon.ctxBack.drawImage(img,440,130);
     },
 
     mainLoop: function(){

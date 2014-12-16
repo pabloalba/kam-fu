@@ -16,7 +16,7 @@ var gameMenu = {
         gameCommon.items.push(button);
 
 
-        button = new Item(560, 0, 720, 145, 0, 0, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/simon.ogg', {game:gameSimon});
+        button = new Item(100, 400, 360, 655, 0, 0, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/simon.ogg', {game:gameSimon});
         gameCommon.items.push(button);
 
     },
@@ -48,7 +48,7 @@ var gameMenu = {
 
     gameLoop: function(delta){
         if ((gameMenu.activeButton != null) &&
-            (new Date().getTime() - gameMenu.activeButton.activeTime) > 3000){
+            (new Date().getTime() - gameMenu.activeButton.activeTime) > 2000){
                 console.log("Ouch");
                 gameCommon.playSound("audio/select.ogg");
                 gameCommon.startGame(gameMenu.activeButton.data.game);

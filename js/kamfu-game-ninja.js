@@ -24,7 +24,9 @@ var gameNinja = {
 
     drawGameData: function(){
         gameCommon.ctxBack.font = "bold 96px Nunito";
-        gameCommon.ctxBack.clearRect(0, 0, 1280, 200);
+        gameCommon.ctxBack.clearRect(0, 0, 450, 200);
+        gameCommon.ctxBack.clearRect(1000, 0, 402, 200);
+        gameCommon.ctxBack.clearRect(500, 450, 300, 200);
         gameNinja.drawScore();
         gameNinja.drawLife();
         gameNinja.drawTime();
@@ -41,7 +43,7 @@ var gameNinja = {
         gameCommon.ctxBack.fillStyle = "#0000FF";
         var s = Math.ceil(gameNinja.levelTime / 1000)+"";
         while (s.length < 3) s = "0" + s;
-        gameCommon.ctxBack.fillText(s, 600, 80);
+        gameCommon.ctxBack.fillText(s, 550, 650);
     },
 
     drawLife: function(){
@@ -71,7 +73,7 @@ var gameNinja = {
         sound = 'audio/lee' + rnd + '.ogg';
 
 
-        if (pos == 0){
+        if (Math.random() >= 0.5){
             x = 0;
             y = Math.round(Math.random() * 720);
             if (y > 360) {
@@ -80,9 +82,7 @@ var gameNinja = {
                 velY = 0.2;
             }
             velX = 0.4;
-        }
-
-        if (pos == 1){
+        } else {
             x = 1280;
             y = Math.round(Math.random() * 720);
             velX = -0.4;
@@ -93,16 +93,7 @@ var gameNinja = {
             }
         }
 
-        if (pos == 2){
-            x = Math.round(Math.random() * 1280);
-            y = 0;
-            velY = 0.2;
-            if (x > 640) {
-                velX = -0.2;
-            } else {
-                velX = 0.2;
-            }
-        }
+
 
         var ninja = new Item(x, y, x+NINJA_WIDTH, y+NINJA_HEIGHT, velX, velY, type, document.getElementById("ninjaExplosion"), sound);
         gameCommon.items.push(ninja);
@@ -127,8 +118,8 @@ var gameNinja = {
         var y = (ninja.y1 + ninja.y2) / 2;
 
         if (
-            ((x > 320) && (x < 960) && (y>500)) ||
-            ((x > 520) && (x < 760) && (y>125))
+            ((x > 385) && (x < 885) && (y>320)) ||
+            ((x > 520) && (x < 760) && (y>50))
             ){
                 return true;
             }
