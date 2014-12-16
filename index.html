@@ -2,10 +2,13 @@
     <head>
         <title>Kam-Fu</title>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="js/resemblejs/resemble.js"></script>
+        <script src="js/kamfu-comparator.js"></script>
         <script src="js/kamfu-camera.js"></script>
         <script src="js/kamfu-game-common.js"></script>
         <script src="js/kamfu-game-menu.js"></script>
+        <script src="js/kamfu-game-dance.js"></script>
+        <script src="js/kamfu-game-ninja.js"></script>
+        <script src="js/kamfu-game-simon.js"></script>
 
         <link rel="stylesheet" type="text/css" href="css/kamfu.css" />
         <link href='http://fonts.googleapis.com/css?family=Nunito:700' rel='stylesheet' type='text/css'>
@@ -18,20 +21,17 @@
         </div>
 
 
-
-        <div class="graphicsContainer">
-            <canvas id="gameBackground" height="720" width="1280"></canvas>
-        </div>
-
-
-
         <div class="graphicsContainer">
             <canvas id="gameFront" height="720" width="1280"></canvas>
         </div>
 
+        <div class="graphicsContainer">
+            <canvas id="gameForeground" height="720" width="1280"></canvas>
+        </div>
 
 
-        <label id="countDown" class="countDown">5</label>
+
+        <label id="countDown" class="countDown"></label>
 
         <img id="backImage" class="invisible" src="img/background1.jpg" />
         <img id="silhouette" class="invisible" src="img/silhouette.png" />
@@ -42,11 +42,16 @@
         <img id="simonActive" class="invisible" src="img/simon1.png" />
         <img id="simonInactive" class="invisible" src="img/simon2.png" />
 
+        <img id="ninjaForeground" class="invisible" src="img/ninja_foreground.png" />
+
+        <img id="ninjaBlack" class="invisible" src="img/ninja_black.png" />
+        <img id="ninjaWhite" class="invisible" src="img/ninja_white.png" />
+        <img id="ninjaExplosion" class="invisible" src="img/explosion.png" />
+
 
         <img id="movementImage" src="" />
 
-        <audio src="audio/fight.ogg" loop="true" autoplay="true"></audio>
-        <audio src="" id="effect"></audio>
-
+        <audio id="music" src="" loop="true"></audio>
+        <audio id="effect" src="" ></audio>
     </body>
 </html>

@@ -3,16 +3,19 @@
 
 var gameMenu = {
     activeButton: null,
+    foregroundImage: null,
 
     setup: function(gameBackground, gameFront, movementImage) {
-        var button = new Item(100, 100, 360, 355, document.getElementById("danceActive"), document.getElementById("danceInactive"), 'audio/dance.ogg');
+
+        gameCommon.playMusic("audio/music_intro.ogg");
+        var button = new Item(100, 100, 360, 355, 0, 0, document.getElementById("danceActive"), document.getElementById("danceInactive"), 'audio/dance.ogg', {game:gameDance});
         gameCommon.items.push(button);
 
-        button = new Item(920, 100, 1180, 355, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg');
+        button = new Item(920, 100, 1180, 355, 0, 0, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg', {game:gameNinja});
         gameCommon.items.push(button);
 
 
-        button = new Item(560, 0, 720, 145, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/menu.ogg');
+        button = new Item(560, 0, 720, 145, 0, 0, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/simon.ogg', {game:gameSimon});
         gameCommon.items.push(button);
 
     },
@@ -30,8 +33,7 @@ var gameMenu = {
                 } else {
                     button.setActive(active);
                     gameMenu.activeButton = button;
-                    document.getElementById('effect').src = button.sound;
-                    document.getElementById('effect').play()
+                    gameCommon.playSound(button.sound);
                 }
             } else {
                 button.setActive(active);
@@ -44,6 +46,10 @@ var gameMenu = {
     },
 
     gameLoop: function(delta){
-
+        if ((gameMenu.activeButton != null) &&
+            (new Date().getTime() - gameMenu.activeButton.activeTime) > 3000){
+                gameCommon.playSound("audio/select.ogg");
+                gameCommon.startGame(gameMenu.activeButton.data.game);
+        }
     }
 }

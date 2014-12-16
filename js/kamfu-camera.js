@@ -9,7 +9,6 @@ var camera = {
     localMediaStream: null,
     ctx: null,
     count: 0,
-    baseImage: null,
     video: null,
     countDownElement: null,
     initCallback: function() {},
@@ -19,9 +18,9 @@ var camera = {
     },
 
     preInit: function(src){
-        camera.countDown = 5000 - (new Date().getTime() - camera.startupTime);
+        camera.countDown = 1000 - (new Date().getTime() - camera.startupTime);
         if (camera.countDown <= 0){
-            camera.baseImage = src;
+            imageComparator.setup(src);
             camera.initialized = true
             camera.countDownElement.addClass('start');
             camera.countDownElement.text('START!');
@@ -43,7 +42,9 @@ var camera = {
             if (camera.initialized == false) {
                 camera.preInit(src);
             } else {
-                var diff = resemble(camera.baseImage).compareTo(src).kamfu().onComplete(camera.onSnapshot);
+                //var diff = resemble(camera.baseImage).compareTo(src).kamfu().onComplete(camera.onSnapshot);
+                imageComparator.onComplete = camera.onSnapshot;
+                imageComparator.setImage(src);
             }
         }
     },
