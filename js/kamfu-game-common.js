@@ -194,7 +194,7 @@ var gameCommon = {
     },
 
     initCallback: function(){
-        gameCommon.startGame(gameMenu);
+        gameCommon.startGame(gameDance);
     }
 
 }
