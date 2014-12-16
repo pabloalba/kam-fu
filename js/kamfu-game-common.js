@@ -54,7 +54,6 @@ function Item (x1, y1, x2, y2, velX, velY, imageInactive, imageActive, sound, da
 var gameCommon = {
     ctxForeGround:null,
     ctxFront:null,
-    movementImage: null,
     activeItem: null,
     items: [],
     onUserMove: function() {},
@@ -72,14 +71,17 @@ var gameCommon = {
         gameCommon.onUserMove = function() {};
         gameCommon.gameLoop = function() {};
         gameCommon.ctxFront.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
+        gameCommon.ctxBack.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     },
 
     startGame: function(game){
+        console.log("Starting game");
         gameCommon.clearup(),
         game.setup();
         gameCommon.onUserMove = game.onUserMove;
         gameCommon.gameLoop = game.gameLoop;
+
+        gameCommon.drawSilhouette();
 
         if (game.foregroundImage != null) {
             gameCommon.ctxForeGround.drawImage(game.foregroundImage,0,0);
@@ -88,19 +90,17 @@ var gameCommon = {
         }
     },
 
-    setup: function(gameForeground, gameFront, movementImage) {
+    setup: function(gameForeground, gameFront, gameBack) {
         gameCommon.time = new Date().getTime();
 
-        gameCommon.movementImage=movementImage;
-
-        gameCommon.ctxForeGround=gameForeground.getContext("2d");
-        gameCommon.ctxFront=gameFront.getContext("2d");
+        gameCommon.ctxForeGround = gameForeground.getContext("2d");
+        gameCommon.ctxFront = gameFront.getContext("2d");
+        gameCommon.ctxBack = gameBack.getContext("2d");
 
         gameCommon.drawSilhouette();
     },
 
     onSnapshot: function(data){
-        //gameCommon.movementImage.attr('src', data.getImageDataUrl());
         gameCommon.onUserMove();
     },
 
@@ -117,18 +117,15 @@ var gameCommon = {
         for (x=item.scaledX1;x<item.scaledX2;x++){
             if (imageComparator.checkPixelChanged(x,item.scaledY1) ||
                 imageComparator.checkPixelChanged(x,item.scaledY2)){
-                    console.log(true);
                     return true;
             }
         }
         for (y=item.scaledY1;y<item.scaledY2;y++){
             if (imageComparator.checkPixelChanged(item.scaledX1,y) ||
                 imageComparator.checkPixelChanged(item.scaledX2,y)){
-                    console.log(true);
                     return true;
             }
         }
-        console.log(false);
         return false;
     },
 
@@ -143,7 +140,9 @@ var gameCommon = {
 
 
         //Mirror
-        gameCommon.ctxFront.drawImage(img,(GAME_WIDTH - item.x2), item.y1);
+        if (img!=null) {
+            gameCommon.ctxFront.drawImage(img,(GAME_WIDTH - item.x2), item.y1);
+        }
     },
 
     clearItem: function(item){
@@ -153,7 +152,7 @@ var gameCommon = {
 
     drawSilhouette:  function(){
         var img=document.getElementById("silhouette");
-        gameCommon.ctxFront.drawImage(img,390,247);
+        gameCommon.ctxBack.drawImage(img,390,247);
     },
 
     mainLoop: function(){
@@ -175,7 +174,7 @@ var gameCommon = {
             gameCommon.drawItem (item);
         }
 
-        gameCommon.drawSilhouette();
+
 
         window.setTimeout(gameCommon.mainLoop, 10);
     },
@@ -203,15 +202,11 @@ var gameCommon = {
 
 $(document).ready(function() {
     console.log( "ready!" );
-    var movementImage = $("#movementImage");
-
-    if (debug) {
-        movementImage.css('display','block');
-    }
 
     var gameForeground = $('#gameForeground')[0];
+    var gameBack = $('#gameBack')[0];
     var gameFront = $('#gameFront')[0];
-    gameCommon.setup(gameForeground, gameFront, movementImage);
+    gameCommon.setup(gameForeground, gameFront, gameBack);
 
     var video = document.querySelector('video');
     var countDown = $("#countDown");

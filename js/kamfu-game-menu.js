@@ -6,6 +6,7 @@ var gameMenu = {
     foregroundImage: null,
 
     setup: function(gameBackground, gameFront, movementImage) {
+        gameMenu.activeButton = null;
 
         gameCommon.playMusic("audio/music_intro.ogg");
         var button = new Item(100, 100, 360, 355, 0, 0, document.getElementById("danceActive"), document.getElementById("danceInactive"), 'audio/dance.ogg', {game:gameDance});
@@ -48,6 +49,7 @@ var gameMenu = {
     gameLoop: function(delta){
         if ((gameMenu.activeButton != null) &&
             (new Date().getTime() - gameMenu.activeButton.activeTime) > 3000){
+                console.log("Ouch");
                 gameCommon.playSound("audio/select.ogg");
                 gameCommon.startGame(gameMenu.activeButton.data.game);
         }

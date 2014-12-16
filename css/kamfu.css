@@ -61,7 +61,7 @@ body {
 }
 
 
-#gameFront, #gameForeground {
+#gameBack, #gameFront, #gameForeground {
     background-color:transparent;
     position:absolute;
     top:0px;

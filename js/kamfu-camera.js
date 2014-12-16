@@ -18,7 +18,7 @@ var camera = {
     },
 
     preInit: function(src){
-        camera.countDown = 1000 - (new Date().getTime() - camera.startupTime);
+        camera.countDown = 5000 - (new Date().getTime() - camera.startupTime);
         if (camera.countDown <= 0){
             imageComparator.setup(src);
             camera.initialized = true
