@@ -12,6 +12,7 @@ var camera = {
     baseImage: null,
     video: null,
     countDownElement: null,
+    initCallback: function() {},
 
     errorCallback: function(e) {
         console.log('Camera error', e);
@@ -25,6 +26,7 @@ var camera = {
             camera.countDownElement.addClass('start');
             camera.countDownElement.text('START!');
             window.setTimeout(function(){camera.countDownElement.text('');}, 1000);
+            camera.initCallback();
         } else {
             camera.countDownElement.text(Math.ceil(camera.countDown/1000));
         }
@@ -51,10 +53,11 @@ var camera = {
          window.setTimeout(camera.loop, 10);
     },
 
-    setup: function(video, countDownElement, onSnapshot) {
+    setup: function(video, countDownElement, onSnapshot, initCallback) {
         camera.video = video;
         camera.countDownElement = countDownElement;
         camera.onSnapshot = onSnapshot;
+        camera.initCallback = initCallback;
 
         camera.canvas = document.createElement('canvas');
         camera.canvas.id = "screenshot-canvas";
