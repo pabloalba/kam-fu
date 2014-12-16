@@ -12,6 +12,7 @@ var gameNinja = {
     levelTime: 20000,
 
     setup: function(gameBackground, gameFront, movementImage) {
+        var countDown = $("#countDown");
         gameNinja.foregroundImage = $("#ninjaForeground")[0];
         gameNinja.time = new Date().getTime();
         gameNinja.levelTime = 20000;
@@ -20,13 +21,14 @@ var gameNinja = {
         gameNinja.level= 0,
         gameNinja.life= 400,
         gameCommon.playMusic("audio/music_fight.ogg");
+        countDown.text('READY');
     },
 
     drawGameData: function(){
         gameCommon.ctxBack.font = "bold 96px Nunito";
         gameCommon.ctxBack.clearRect(0, 0, 450, 200);
         gameCommon.ctxBack.clearRect(1000, 0, 402, 200);
-        gameCommon.ctxBack.clearRect(500, 450, 300, 200);
+        gameCommon.ctxBack.clearRect(500, 450, 290, 250);
         gameNinja.drawScore();
         gameNinja.drawLife();
         gameNinja.drawTime();
@@ -93,6 +95,9 @@ var gameNinja = {
             }
         }
 
+        velY = velY * (1+(gameNinja.level/10));
+        velX = velX * (1+(gameNinja.level/10));
+
 
 
         var ninja = new Item(x, y, x+NINJA_WIDTH, y+NINJA_HEIGHT, velX, velY, type, document.getElementById("ninjaExplosion"), sound);
@@ -104,7 +109,7 @@ var gameNinja = {
     launchNinjas: function(){
         if (gameNinja.status == 1) {
             gameNinja.launchNinja();
-            window.setTimeout(gameNinja.launchNinjas, 2000);
+            window.setTimeout(gameNinja.launchNinjas, 2000 - (gameNinja.level * 50));
         }
     },
 
@@ -155,7 +160,6 @@ var gameNinja = {
     splash: function(){
         var now = new Date().getTime();
         var countDown = $("#countDown");
-        countDown.text('READY');
         if (now - gameNinja.time > 5000){
             gameNinja.status = 1;
             gameCommon.clearItems();
@@ -174,9 +178,11 @@ var gameNinja = {
             window.setTimeout(function(){countDown.text('');gameCommon.startGame(gameMenu)}, 2000);
         }
         if (gameNinja.levelTime <= 0) {
-            countDown.text('TIME UP!');
-            gameNinja.status = 2;
-            window.setTimeout(function(){countDown.text('');gameCommon.startGame(gameMenu)}, 2000);
+            countDown.text('NEXT LEVEL!');
+            gameNinja.level++;
+            gameNinja.status = 0;
+            gameNinja.time = now;
+            gameNinja.levelTime = 20000;
         } else {
             var kia = [];
             for (i = 0; i < gameCommon.items.length; i++) {
