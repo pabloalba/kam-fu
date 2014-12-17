@@ -46,7 +46,6 @@ var gameSimon = {
             button.y2 = button.y2 + 40;
             button.refreshScaled();
             button.setActive(true);
-            gameCommon.clearFrontContext();
             window.setTimeout(function(){gameSimon.deactivateButton(button)}, 500);
         }
     },
@@ -59,8 +58,6 @@ var gameSimon = {
             button.y1 = button.y1 + 40;
             button.y2 = button.y2 - 40;
             button.refreshScaled();
-
-            gameCommon.clearFrontContext();
         }
     },
 
