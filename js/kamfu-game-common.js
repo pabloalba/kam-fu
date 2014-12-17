@@ -21,6 +21,7 @@ function Item (x1, y1, x2, y2, velX, velY, imageInactive, imageActive, sound, da
     this.inactiveTime = 0;
     this.sound = sound;
     this.data = data;
+    this.currentText = "";
 
     this.scaledX1 = Math.round(x1 * IMAGE_WIDTH / GAME_WIDTH);
     this.scaledX2 = Math.round(x2 * IMAGE_WIDTH / GAME_WIDTH);
@@ -54,6 +55,8 @@ function Item (x1, y1, x2, y2, velX, velY, imageInactive, imageActive, sound, da
 var gameCommon = {
     ctxForeGround:null,
     ctxFront:null,
+    ctxBack:null,
+    ctxText:null,
     activeItem: null,
     items: [],
     onUserMove: function() {},
@@ -72,10 +75,10 @@ var gameCommon = {
         gameCommon.gameLoop = function() {};
         gameCommon.ctxFront.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         gameCommon.ctxBack.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        gameCommon.ctxText.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     },
 
     startGame: function(game){
-        console.log("Starting game");
         gameCommon.clearup(),
         game.setup();
         gameCommon.onUserMove = game.onUserMove;
@@ -90,12 +93,13 @@ var gameCommon = {
         }
     },
 
-    setup: function(gameForeground, gameFront, gameBack) {
+    setup: function(gameForeground, gameFront, gameBack, gameText) {
         gameCommon.time = new Date().getTime();
 
         gameCommon.ctxForeGround = gameForeground.getContext("2d");
         gameCommon.ctxFront = gameFront.getContext("2d");
         gameCommon.ctxBack = gameBack.getContext("2d");
+        gameCommon.ctxText = gameText.getContext("2d");
 
         gameCommon.drawSilhouette();
     },
@@ -194,25 +198,29 @@ var gameCommon = {
     },
 
     initCallback: function(){
-        gameCommon.startGame(gameDance);
+        gameCommon.startGame(gameMenu);
+    },
+
+    drawText: function(text) {
+        if (gameCommon.currentText != text) {
+            console.log("drawText: " + text +" - " + gameCommon.currentText);
+            console.log(gameCommon.ctxText);
+            gameCommon.clearText();
+            gameCommon.currentText = text;
+            gameCommon.ctxText.font = "bold 96px Nunito";
+            gameCommon.ctxText.fillStyle = "#FF0000";
+            gameCommon.ctxText.textAlign = 'center';
+            var x = GAME_WIDTH / 2;
+            gameCommon.ctxText.fillText(text, x, 321);
+        }
+    },
+
+    clearText: function(text) {
+        console.log("clearText");
+        gameCommon.currentText = "";
+        gameCommon.ctxText.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     }
 
+
+
 }
-
-
-$(document).ready(function() {
-    console.log( "ready!" );
-
-    var gameForeground = $('#gameForeground')[0];
-    var gameBack = $('#gameBack')[0];
-    var gameFront = $('#gameFront')[0];
-    gameCommon.setup(gameForeground, gameFront, gameBack);
-
-    var video = document.querySelector('video');
-    var countDown = $("#countDown");
-    camera.setup(video,countDown, gameCommon.onSnapshot, gameCommon.initCallback);
-
-
-    window.setTimeout(gameCommon.mainLoop, 100);
-
-});

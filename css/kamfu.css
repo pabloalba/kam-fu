@@ -15,17 +15,6 @@ body {
 }
 
 
-.countDown {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    color: red;
-    font-family: 'Nunito', sans-serif;
-    font-size: 175px;
-    line-height: 0;
-}
-
-
 .start{
     position: absolute;
     left: 35%;
@@ -61,7 +50,7 @@ body {
 }
 
 
-#gameBack, #gameFront, #gameForeground {
+#gameBack, #gameFront, #gameForeground, #gameText {
     background-color:transparent;
     position:absolute;
     top:0px;
@@ -73,14 +62,4 @@ body {
 
 .invisible {
    display: none;
-}
-
-#movementImage {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 320px;
-    height: 180px;
-
-    display: none;
 }

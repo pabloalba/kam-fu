@@ -9,6 +9,7 @@
         <script src="js/kamfu-game-dance.js"></script>
         <script src="js/kamfu-game-ninja.js"></script>
         <script src="js/kamfu-game-simon.js"></script>
+        <script src="js/kamfu.js"></script>
 
         <link rel="stylesheet" type="text/css" href="css/kamfu.css" />
         <link href='http://fonts.googleapis.com/css?family=Nunito:700' rel='stylesheet' type='text/css'>
@@ -32,11 +33,10 @@
             <canvas id="gameForeground" height="720" width="1280"></canvas>
         </div>
 
+        <div class="graphicsContainer">
+            <canvas id="gameText" height="720" width="1280"></canvas>
+        </div>
 
-
-        <label id="countDown" class="countDown"></label>
-
-        <img id="backImage" class="invisible" src="img/background1.jpg" />
         <img id="silhouette" class="invisible" src="img/silhouette.png" />
         <img id="ninjaActive" class="invisible" src="img/ninja_attack1.png" />
         <img id="ninjaInactive" class="invisible" src="img/ninja_attack2.png" />
@@ -59,8 +59,6 @@
         <img id="buttonRed" class="invisible" src="img/button_red.png" />
         <img id="buttonGreen" class="invisible" src="img/button_green.png" />
 
-
-        <img id="movementImage" src="" />
 
         <audio id="music" src="" loop="true"></audio>
         <audio id="effect" src="" ></audio>

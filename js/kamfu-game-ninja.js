@@ -11,8 +11,7 @@ var gameNinja = {
     life: 400,
     levelTime: 20000,
 
-    setup: function(gameBackground, gameFront, movementImage) {
-        var countDown = $("#countDown");
+    setup: function(gameBackground, gameFront) {
         gameNinja.foregroundImage = $("#ninjaForeground")[0];
         gameNinja.time = new Date().getTime();
         gameNinja.levelTime = 20000;
@@ -21,7 +20,7 @@ var gameNinja = {
         gameNinja.level= 0,
         gameNinja.life= 400,
         gameCommon.playMusic("audio/music_fight.ogg");
-        countDown.text('READY');
+        gameCommon.drawText('READY');
     },
 
     drawGameData: function(){
@@ -159,26 +158,24 @@ var gameNinja = {
 
     splash: function(){
         var now = new Date().getTime();
-        var countDown = $("#countDown");
         if (now - gameNinja.time > 5000){
             gameNinja.status = 1;
             gameCommon.clearItems();
-            countDown.text('');
+            gameCommon.clearText();
             gameNinja.startGame();
         }
     },
 
     gameTick: function(delta){
         var now = new Date().getTime();
-        var countDown = $("#countDown");
         gameNinja.levelTime -= delta;
         if (gameNinja.life <= 0) {
-            countDown.text('YOU LOSE!');
+            gameCommon.drawText('YOU LOSE!');
             gameNinja.status = 2;
-            window.setTimeout(function(){countDown.text('');gameCommon.startGame(gameMenu)}, 2000);
+            window.setTimeout(function(){gameCommon.startGame(gameMenu)}, 2000);
         }
         if (gameNinja.levelTime <= 0) {
-            countDown.text('NEXT LEVEL!');
+            gameCommon.drawText('NEXT LEVEL!');
             gameNinja.level++;
             gameNinja.status = 0;
             gameNinja.time = now;

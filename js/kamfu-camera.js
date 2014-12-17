@@ -10,7 +10,6 @@ var camera = {
     ctx: null,
     count: 0,
     video: null,
-    countDownElement: null,
     initCallback: function() {},
 
     errorCallback: function(e) {
@@ -18,16 +17,16 @@ var camera = {
     },
 
     preInit: function(src){
+        gameCommon.drawSilhouette();
         camera.countDown = 5000 - (new Date().getTime() - camera.startupTime);
         if (camera.countDown <= 0){
             imageComparator.setup(src);
             camera.initialized = true
-            camera.countDownElement.addClass('start');
-            camera.countDownElement.text('START!');
-            window.setTimeout(function(){camera.countDownElement.text('');}, 1000);
+            gameCommon.drawText("START!");
+            window.setTimeout(function(){gameCommon.clearText()}, 1000);
             camera.initCallback();
         } else {
-            camera.countDownElement.text(Math.ceil(camera.countDown/1000));
+            gameCommon.drawText(""+Math.ceil(camera.countDown/1000));
         }
     },
 
@@ -37,15 +36,22 @@ var camera = {
                 camera.startupTime = new Date().getTime();
             }
 
-            camera.ctx.drawImage(camera.video, 0, 0);
-            var src = camera.canvas.toDataURL('image/webp');
-            if (camera.initialized == false) {
-                camera.preInit(src);
-            } else {
-                //var diff = resemble(camera.baseImage).compareTo(src).kamfu().onComplete(camera.onSnapshot);
-                imageComparator.onComplete = camera.onSnapshot;
-                imageComparator.setImage(src);
+            try {
+                camera.ctx.drawImage(camera.video, 0, 0);
+
+                var src = camera.canvas.toDataURL('image/webp');
+                if (camera.initialized == false) {
+                    camera.preInit(src);
+                } else {
+                    imageComparator.onComplete = camera.onSnapshot;
+                    imageComparator.setImage(src);
+                }
             }
+            catch(err) {
+                console.log(err);
+            }
+
+
         }
     },
 
@@ -54,20 +60,16 @@ var camera = {
          window.setTimeout(camera.loop, 10);
     },
 
-    setup: function(video, countDownElement, onSnapshot, initCallback) {
+    setup: function(video, onSnapshot, initCallback) {
         camera.video = video;
-        camera.countDownElement = countDownElement;
-        camera.onSnapshot = onSnapshot;
         camera.initCallback = initCallback;
+        camera.onSnapshot = onSnapshot;
 
         camera.canvas = document.createElement('canvas');
         camera.canvas.id = "screenshot-canvas";
         camera.canvas.width  = WIDTH;
         camera.canvas.height = HEIGHT;
         camera.canvas.style.display   = 'none';
-
-        countDownElement.left = (WIDTH / 2) - 95;
-
 
         camera.ctx = camera.canvas.getContext('2d');
 
@@ -99,5 +101,4 @@ var camera = {
         window.setTimeout(camera.loop, 1000);
 
     }
-
 }
