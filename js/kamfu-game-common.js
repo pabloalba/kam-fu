@@ -68,6 +68,10 @@ var gameCommon = {
         gameCommon.ctxFront.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     },
 
+    clearFrontContext: function(){
+        gameCommon.ctxFront.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    },
+
     clearup: function(){
         gameCommon.stopMusic();
         gameCommon.clearItems();
@@ -203,8 +207,6 @@ var gameCommon = {
 
     drawText: function(text) {
         if (gameCommon.currentText != text) {
-            console.log("drawText: " + text +" - " + gameCommon.currentText);
-            console.log(gameCommon.ctxText);
             gameCommon.clearText();
             gameCommon.currentText = text;
             gameCommon.ctxText.font = "bold 96px Nunito";
@@ -216,7 +218,6 @@ var gameCommon = {
     },
 
     clearText: function(text) {
-        console.log("clearText");
         gameCommon.currentText = "";
         gameCommon.ctxText.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     }

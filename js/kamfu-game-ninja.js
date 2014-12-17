@@ -5,7 +5,7 @@ var NINJA_HEIGHT = 145;
 var gameNinja = {
     time: 0,
     foregroundImage: null,
-    status: 0,
+    status: 0, //0: Splash, 1: Game, 2: End
     score: 0,
     level: 0,
     life: 400,
@@ -107,6 +107,7 @@ var gameNinja = {
 
     launchNinjas: function(){
         if (gameNinja.status == 1) {
+            gameNinja.launchNinja();
             gameNinja.launchNinja();
             window.setTimeout(gameNinja.launchNinjas, 2000 - (gameNinja.level * 50));
         }

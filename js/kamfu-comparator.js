@@ -1,7 +1,7 @@
 var imageComparator = {
     originalContext: null,
     actualContext: null,
-    tolerance: 80,
+    tolerance: 50,
     onComplete: function(){},
 
     setup: function(originalImageSrc) {
