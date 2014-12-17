@@ -1,5 +1,6 @@
 var NINJA_WIDTH = 130;
 var NINJA_HEIGHT = 145;
+var TIME = 20000;
 
 
 var gameNinja = {
@@ -9,12 +10,12 @@ var gameNinja = {
     score: 0,
     level: 0,
     life: 400,
-    levelTime: 20000,
+    levelTime: TIME,
 
     setup: function(gameBackground, gameFront) {
         gameNinja.foregroundImage = $("#ninjaForeground")[0];
         gameNinja.time = new Date().getTime();
-        gameNinja.levelTime = 20000;
+        gameNinja.levelTime = TIME;
         gameNinja.status= 0,
         gameNinja.score= 0,
         gameNinja.level= 0,
@@ -55,67 +56,96 @@ var gameNinja = {
         gameCommon.ctxBack.fillRect(21,21,gameNinja.life,39);
     },
 
-    launchNinja: function(){
-        var x;
-        var y;
-        var velX;
-        var velY;
-        var type;
-        var rnd;
-        var pos = Math.round(Math.random() * 3);
-
+    createRandomNinja: function(){
         if (Math.random() >= 0.5){
             type = document.getElementById("ninjaBlack");
         } else {
             type = document.getElementById("ninjaWhite");
         }
+        sound = 'audio/lee' + (Math.round(Math.random()*2) +1) + '.ogg';
 
-        rnd = Math.round(Math.random()) +1;
-        sound = 'audio/lee' + rnd + '.ogg';
-
-
-        if (Math.random() >= 0.5){
-            x = 0;
-            y = Math.round(Math.random() * 720);
-            if (y > 360) {
-                velY = -0.2;
-            } else {
-                velY = 0.2;
-            }
-            velX = 0.4;
-        } else {
-            x = 1280;
-            y = Math.round(Math.random() * 720);
-            velX = -0.4;
-            if (y > 360) {
-                velY = -0.2;
-            } else {
-                velY = 0.2;
-            }
-        }
-
-        velY = velY * (1+(gameNinja.level/10));
-        velX = velX * (1+(gameNinja.level/10));
-
-
-
-        var ninja = new Item(x, y, x+NINJA_WIDTH, y+NINJA_HEIGHT, velX, velY, type, document.getElementById("ninjaExplosion"), sound);
-        gameCommon.items.push(ninja);
-
+        return new Item(0, 0, NINJA_WIDTH, NINJA_HEIGHT, 0, 0, type, document.getElementById("ninjaExplosion"), sound);
 
     },
 
+    createNinja1: function(ninja){
+        ninja = gameNinja.createRandomNinja();
+        ninja.x1 = 0;
+        ninja.x2 = ninja.x1 + NINJA_WIDTH;
+        ninja.y1 = Math.round(Math.random() * 300);
+        ninja.y2 = ninja.y1 + NINJA_HEIGHT;
+        ninja.velY = 0.2;
+        ninja.velX = 0.3 + (Math.random() * 0.2) + (0.1 * gameNinja.level);
+
+        ninja.refreshScaled();
+        return ninja;
+    },
+
+    createNinja2: function(ninja){
+        ninja = gameNinja.createRandomNinja();
+        ninja.x1 = 0;
+        ninja.x2 = ninja.x1 + NINJA_WIDTH;
+        ninja.y1 = Math.round(Math.random() * 300)+300;
+        ninja.y2 = ninja.y1 + NINJA_HEIGHT;
+        ninja.velY = -0.2;
+        ninja.velX = 0.3 + (Math.random() * 0.2) + (0.1 * gameNinja.level);
+
+        ninja.refreshScaled();
+        return ninja;
+    },
+
+    createNinja3: function(ninja){
+        ninja = gameNinja.createRandomNinja();
+        ninja.x1 = 1280;
+        ninja.x2 = ninja.x1 + NINJA_WIDTH;
+        ninja.y1 = Math.round(Math.random() * 300);
+        ninja.y2 = ninja.y1 + NINJA_HEIGHT;
+        ninja.velY = 0.2;
+        ninja.velX = -0.3 - (Math.random() * 0.2) - (0.1 * gameNinja.level);
+
+        ninja.refreshScaled();
+        return ninja;
+    },
+
+    createNinja4: function(ninja){
+        ninja = gameNinja.createRandomNinja();
+        ninja.x1 = 1280;
+        ninja.x2 = ninja.x1 + NINJA_WIDTH;
+        ninja.y1 = Math.round(Math.random() * 300)+300;
+        ninja.y2 = ninja.y1 + NINJA_HEIGHT;
+        ninja.velY = -0.2;
+        ninja.velX = -0.3 - (Math.random() * 0.2) - (0.1 * gameNinja.level);
+
+        ninja.refreshScaled();
+        return ninja;
+    },
+
+
+
     launchNinjas: function(){
+        var ninjas = [gameNinja.createNinja1(),gameNinja.createNinja2(), gameNinja.createNinja3(), gameNinja.createNinja4()];
+        var max = (gameNinja.level <= 3)?gameNinja.level:3;
+
+        for (i=0; i<= max; i++){
+            var rnd = Math.round(Math.random() * (ninjas.length-1));
+            console.log("Ninja " + rnd);
+            var ninja = ninjas.splice(rnd,1)[0];
+            gameCommon.items.push(ninja);
+        }
+
+    },
+
+    ninjaStream: function(){
         if (gameNinja.status == 1) {
-            gameNinja.launchNinja();
-            gameNinja.launchNinja();
-            window.setTimeout(gameNinja.launchNinjas, 2000 - (gameNinja.level * 50));
+            gameNinja.launchNinjas();
+            window.setTimeout(gameNinja.ninjaStream, 2000 - (gameNinja.level * 100));
         }
     },
 
     startGame: function() {
+        console.log("Start ninja!");
         gameNinja.status = 1;
-        gameNinja.launchNinjas();
+        gameNinja.ninjaStream();
     },
 
     checkPunch: function(ninja){
@@ -143,7 +173,9 @@ var gameNinja = {
                     ninja.velY = 0;
                     ninja.imageActive = null;
                     ninja.setActive(true);
-                    gameNinja.life -= 100;
+                    if (gameNinja.life > 0) {
+                        gameNinja.life -= 100;
+                    }
                 } else if (active){
                     gameCommon.playSound(ninja.sound);
                     ninja.velX = 0;
@@ -159,11 +191,13 @@ var gameNinja = {
 
     splash: function(){
         var now = new Date().getTime();
-        if (now - gameNinja.time > 5000){
-            gameNinja.status = 1;
-            gameCommon.clearItems();
-            gameCommon.clearText();
-            gameNinja.startGame();
+        if (now - gameNinja.time > 2000){
+            if (gameNinja.status != 1) {
+                gameNinja.status = 1;
+                gameCommon.clearItems();
+                gameCommon.clearText();
+                gameNinja.startGame();
+            }
         }
     },
 
@@ -180,7 +214,7 @@ var gameNinja = {
             gameNinja.level++;
             gameNinja.status = 0;
             gameNinja.time = now;
-            gameNinja.levelTime = 20000;
+            gameNinja.levelTime = TIME;
         } else {
             var kia = [];
             for (i = 0; i < gameCommon.items.length; i++) {

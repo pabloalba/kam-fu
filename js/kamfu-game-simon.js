@@ -6,7 +6,7 @@ var gameSimon = {
     sequence: [],
     index: 0,
     time:0,
-    status: 0, //0: Splash, 1: Machine, 2: User, 3: End
+    status: 0, //0: Splash, 1: Machine, 2: User, 3: End, 4: Pause
 
 
     setup: function(gameBackground, gameFront, movementImage) {
@@ -16,19 +16,19 @@ var gameSimon = {
         gameSimon.buttons = [];
 
         var button;
-        button = new Item(810, 50, 930, 170, 0, 0, document.getElementById("buttonYellow"), document.getElementById("buttonYellowBig"), 'audio/note1.ogg');
+        button = new Item(1010, 50, 1130, 170, 0, 0, document.getElementById("buttonYellow"), document.getElementById("buttonYellowBig"), 'audio/note1.ogg');
         gameCommon.items.push(button);
         gameSimon.buttons.push(button);
 
-        button = new Item(350, 50, 470, 170, 0, 0, document.getElementById("buttonGreen"), document.getElementById("buttonGreenBig"), 'audio/note2.ogg');
+        button = new Item(150, 50, 270, 170, 0, 0, document.getElementById("buttonGreen"), document.getElementById("buttonGreenBig"), 'audio/note2.ogg');
         gameCommon.items.push(button);
         gameSimon.buttons.push(button);
 
-        button = new Item(910, 500, 1030, 720, 0, 0, document.getElementById("buttonBlue"), document.getElementById("buttonBlueBig"), 'audio/note3.ogg');
+        button = new Item(1010, 500, 1130, 720, 0, 0, document.getElementById("buttonBlue"), document.getElementById("buttonBlueBig"), 'audio/note3.ogg');
         gameCommon.items.push(button);
         gameSimon.buttons.push(button);
 
-        button = new Item(250, 500, 370, 720, 0, 0, document.getElementById("buttonRed"), document.getElementById("buttonRedBig"), 'audio/note4.ogg');
+        button = new Item(150, 500, 270, 720, 0, 0, document.getElementById("buttonRed"), document.getElementById("buttonRedBig"), 'audio/note4.ogg');
         gameCommon.items.push(button);
         gameSimon.buttons.push(button);
 
@@ -47,7 +47,6 @@ var gameSimon = {
             button.y2 = button.y2 + 40;
             button.refreshScaled();
             button.setActive(true);
-            gameCommon.clearFrontContext();
         }
     },
 
@@ -60,7 +59,6 @@ var gameSimon = {
             button.y2 = button.y2 - 40;
             button.refreshScaled();
             button.setActive(false);
-            gameCommon.clearFrontContext();
         }
     },
 
@@ -83,10 +81,7 @@ var gameSimon = {
                                 gameCommon.playSound(button.sound);
                                 gameSimon.index++;
                                 if (gameSimon.index == gameSimon.sequence.length){
-                                    console.log("computer");
-                                    gameSimon.status = 1;
-                                    gameCommon.drawText("COMPUTER");
-                                    window.setTimeout(gameSimon.computerTurn, 3000);
+                                    gameSimon.endUserTurn();
                                 }
                             } else {
                                 gameSimon.endGame();
@@ -105,16 +100,21 @@ var gameSimon = {
         }
     },
 
-    computerTurn: function(){
+    endUserTurn: function(){
         gameSimon.status = 1;
-        gameCommon.clearText();
+        gameSimon.index = 0;
+        gameCommon.drawText("COMPUTER");
+        window.setTimeout(gameSimon.computerTurn, 3000);
         for (i = 0; i < gameSimon.buttons.length; i++) {
             var button = gameSimon.buttons[i];
             if (button.active){
-                gameSimon.deactivateButton(button);
+                window.setTimeout(function(){gameSimon.deactivateButton(button);}, 200);
             }
         }
-        gameSimon.index = 0;
+    },
+
+    computerTurn: function(){
+        gameCommon.clearText();
         var num = Math.floor((Math.random() * 4));
         var button = gameSimon.buttons[num];
         gameSimon.sequence.push(button);
@@ -122,9 +122,9 @@ var gameSimon = {
     },
 
     startUser: function(){
+        gameSimon.status = 4;
         gameCommon.drawText("YOU");
-        window.setTimeout(function(){gameCommon.clearText()}, 1000);
-        gameSimon.status = 2;
+        window.setTimeout(function(){gameCommon.clearText(); gameSimon.status = 2;}, 1000);
         gameSimon.index = 0;
     },
 
@@ -139,12 +139,19 @@ var gameSimon = {
         if (index == gameSimon.sequence.length){
             window.setTimeout(function(){gameSimon.startUser();}, 1000);
         } else {
-            console.log("Index: "+index + "Length: "+gameSimon.sequence.length);
             var button = gameSimon.sequence[index];
             gameCommon.playSound(button.sound);
             gameSimon.activateButton(button);
-            window.setTimeout(function(){console.log('A '+gameSimon.status);gameSimon.deactivateButton(button)}, 500);
-            window.setTimeout(function(){gameSimon.playSequence(index+1)}, 1000);
+            window.setTimeout(function(){gameSimon.deactivateButton(button)}, 500);
+
+            var time = 1000 - (gameSimon.sequence.length * 50);
+            if (time < 600) {
+                time = 600;
+            }
+
+            console.log(time);
+
+            window.setTimeout(function(){gameSimon.playSequence(index+1)}, time);
         }
     },
 

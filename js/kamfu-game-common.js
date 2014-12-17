@@ -169,10 +169,10 @@ var gameCommon = {
         gameCommon.time = time;
 
         gameCommon.gameLoop(delta);
-
+        gameCommon.clearFrontContext();
         for (i = 0; i < gameCommon.items.length; i++) {
             var item = gameCommon.items[i];
-            gameCommon.clearItem(item);
+            //gameCommon.clearItem(item);
             var antes = item.x1;
             item.x1 = Math.round(item.x1 + (delta * item.velX));
             item.x2 = Math.round(item.x2 + (delta * item.velX));
@@ -201,10 +201,6 @@ var gameCommon = {
         document.getElementById('effect').play()
     },
 
-    initCallback: function(){
-        gameCommon.startGame(gameMenu);
-    },
-
     drawText: function(text) {
         if (gameCommon.currentText != text) {
             gameCommon.clearText();
@@ -220,7 +216,11 @@ var gameCommon = {
     clearText: function(text) {
         gameCommon.currentText = "";
         gameCommon.ctxText.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    }
+    },
+
+    initCallback: function(){
+        gameCommon.startGame(gameMenu);
+    },
 
 
 
