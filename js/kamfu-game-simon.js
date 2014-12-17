@@ -39,26 +39,28 @@ var gameSimon = {
     },
 
     activateButton: function(button){
-        console.log("Activate: " + gameSimon.status);
-        if (gameSimon.status == 1 || gameSimon.status == 2){
+        if (!button.active){
             button.x1 = button.x1 - 40;
             button.x2 = button.x2 + 40;
             button.y1 = button.y1 - 40;
             button.y2 = button.y2 + 40;
             button.refreshScaled();
             button.setActive(true);
+            gameCommon.clearFrontContext();
+            window.setTimeout(function(){gameSimon.deactivateButton(button)}, 500);
         }
     },
 
     deactivateButton: function(button){
-        console.log("Dectivate: " + gameSimon.status);
-        if (gameSimon.status == 1 || gameSimon.status == 2){
+        if (button.active){ //Prevent double deactivation
+            button.setActive(false);
             button.x1 = button.x1 + 40;
             button.x2 = button.x2 - 40;
             button.y1 = button.y1 + 40;
             button.y2 = button.y2 - 40;
             button.refreshScaled();
-            button.setActive(false);
+
+            gameCommon.clearFrontContext();
         }
     },
 
@@ -74,25 +76,16 @@ var gameSimon = {
                 var active = gameCommon.checkActiveItem(button);
                 if (active){
                     //Should have been a while inactive
-                    if (new Date().getTime() - button.inactiveTime > 500) {
-                        if (!anyActive){
-                            gameSimon.activateButton(button);
-                            if (gameSimon.sequence[gameSimon.index] == button){
-                                gameCommon.playSound(button.sound);
-                                gameSimon.index++;
-                                if (gameSimon.index == gameSimon.sequence.length){
-                                    gameSimon.endUserTurn();
-                                }
-                            } else {
-                                gameSimon.endGame();
+                    if ((!anyActive) && (new Date().getTime() - button.inactiveTime > 500)) {
+                        gameSimon.activateButton(button);
+                        if (gameSimon.sequence[gameSimon.index] == button){
+                            gameCommon.playSound(button.sound);
+                            gameSimon.index++;
+                            if (gameSimon.index == gameSimon.sequence.length){
+                                gameSimon.endUserTurn();
                             }
-                        }
-                    }
-                } else {
-                    if (button.active){
-                        //Should have been a while active
-                        if (new Date().getTime() - button.activeTime > 500) {
-                            gameSimon.deactivateButton(button);
+                        } else {
+                            gameSimon.endGame();
                         }
                     }
                 }
@@ -105,12 +98,6 @@ var gameSimon = {
         gameSimon.index = 0;
         gameCommon.drawText("COMPUTER");
         window.setTimeout(gameSimon.computerTurn, 3000);
-        for (i = 0; i < gameSimon.buttons.length; i++) {
-            var button = gameSimon.buttons[i];
-            if (button.active){
-                window.setTimeout(function(){gameSimon.deactivateButton(button);}, 200);
-            }
-        }
     },
 
     computerTurn: function(){
@@ -142,15 +129,11 @@ var gameSimon = {
             var button = gameSimon.sequence[index];
             gameCommon.playSound(button.sound);
             gameSimon.activateButton(button);
-            window.setTimeout(function(){gameSimon.deactivateButton(button)}, 500);
 
             var time = 1000 - (gameSimon.sequence.length * 50);
             if (time < 600) {
                 time = 600;
             }
-
-            console.log(time);
-
             window.setTimeout(function(){gameSimon.playSequence(index+1)}, time);
         }
     },
