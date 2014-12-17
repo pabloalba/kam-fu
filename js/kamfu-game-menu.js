@@ -32,6 +32,7 @@ var gameMenu = {
                         button.setActive(active);
                     }
                 } else {
+                    gameCommon.ctxBack.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
                     button.setActive(active);
                     gameMenu.activeButton = button;
                     gameCommon.playSound(button.sound);

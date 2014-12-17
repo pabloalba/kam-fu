@@ -15,11 +15,13 @@ $(document).ready(function() {
 
 
     $( "body" ).click(function() {
-        var r = confirm("Reset camera?");
-        if (r == true) {
-            gameCommon.clearup();
-            camera.initialized = false;
-            camera.startupTime = 0;
+        if (gameCommon.currentGame == gameMenu) {
+            var r = confirm("Reset camera?");
+            if (r == true) {
+                gameCommon.clearup();
+                camera.initialized = false;
+                camera.startupTime = 0;
+            }
         }
     });
 

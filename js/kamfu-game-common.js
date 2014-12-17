@@ -62,6 +62,7 @@ var gameCommon = {
     onUserMove: function() {},
     gameLoop: function() {},
     time: 0,
+    currentGame: null,
 
     clearItems: function(){
         gameCommon.items = [];
@@ -95,6 +96,7 @@ var gameCommon = {
         } else {
             gameCommon.ctxForeGround.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         }
+        gameCommon.currentGame = game;
     },
 
     setup: function(gameForeground, gameFront, gameBack, gameText) {
@@ -159,7 +161,7 @@ var gameCommon = {
 
     drawSilhouette:  function(){
         var img=document.getElementById("silhouette");
-        gameCommon.ctxBack.drawImage(img,440,130);
+        gameCommon.ctxBack.drawImage(img,0,0);
     },
 
     mainLoop: function(){

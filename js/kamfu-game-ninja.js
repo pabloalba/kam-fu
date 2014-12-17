@@ -42,10 +42,20 @@ var gameNinja = {
     },
 
     drawTime: function(){
-        gameCommon.ctxBack.fillStyle = "#0000FF";
+        gameCommon.ctxBack.fillStyle = "#000055";
+
+        gameCommon.ctxBack.beginPath();
+        gameCommon.ctxBack.arc(640, 680, 130, 0, 2 * Math.PI, false);
+        gameCommon.ctxBack.fill();
+        gameCommon.ctxBack.strokeStyle = "#000055";
+        gameCommon.ctxBack.stroke();
+
+
+
+        gameCommon.ctxBack.fillStyle = "#FFFFFF";
         var s = Math.ceil(gameNinja.levelTime / 1000)+"";
-        while (s.length < 3) s = "0" + s;
-        gameCommon.ctxBack.fillText(s, 550, 650);
+        while (s.length < 2) s = "0" + s;
+        gameCommon.ctxBack.fillText(s, 580, 665);
     },
 
     drawLife: function(){
@@ -71,11 +81,11 @@ var gameNinja = {
 
     createNinja1: function(ninja){
         ninja = gameNinja.createRandomNinja();
-        ninja.x1 = 0;
+        ninja.x1 = -(Math.round(Math.random() * 600));
         ninja.x2 = ninja.x1 + NINJA_WIDTH;
-        ninja.y1 = Math.round(Math.random() * 300);
+        ninja.y1 = Math.round(Math.random() * 600);
         ninja.y2 = ninja.y1 + NINJA_HEIGHT;
-        ninja.velY = 0.2;
+        ninja.velY = 0.2 + (Math.round(Math.random() * 0.1));
         ninja.velX = 0.3 + (Math.random() * 0.2) + (0.1 * gameNinja.level);
 
         ninja.refreshScaled();
@@ -84,11 +94,11 @@ var gameNinja = {
 
     createNinja2: function(ninja){
         ninja = gameNinja.createRandomNinja();
-        ninja.x1 = 0;
+        ninja.x1 = -(Math.round(Math.random() * 600));
         ninja.x2 = ninja.x1 + NINJA_WIDTH;
         ninja.y1 = Math.round(Math.random() * 300)+300;
         ninja.y2 = ninja.y1 + NINJA_HEIGHT;
-        ninja.velY = -0.2;
+        ninja.velY = -0.2 + (Math.round(Math.random() * 0.1));
         ninja.velX = 0.3 + (Math.random() * 0.2) + (0.1 * gameNinja.level);
 
         ninja.refreshScaled();
@@ -97,11 +107,11 @@ var gameNinja = {
 
     createNinja3: function(ninja){
         ninja = gameNinja.createRandomNinja();
-        ninja.x1 = 1280;
+        ninja.x1 = 1280 + (Math.round(Math.random() * 600));
         ninja.x2 = ninja.x1 + NINJA_WIDTH;
         ninja.y1 = Math.round(Math.random() * 300);
         ninja.y2 = ninja.y1 + NINJA_HEIGHT;
-        ninja.velY = 0.2;
+        ninja.velY = 0.2 + (Math.round(Math.random() * 0.1));
         ninja.velX = -0.3 - (Math.random() * 0.2) - (0.1 * gameNinja.level);
 
         ninja.refreshScaled();
@@ -110,11 +120,11 @@ var gameNinja = {
 
     createNinja4: function(ninja){
         ninja = gameNinja.createRandomNinja();
-        ninja.x1 = 1280;
+        ninja.x1 = 1280 + (Math.round(Math.random() * 600));
         ninja.x2 = ninja.x1 + NINJA_WIDTH;
         ninja.y1 = Math.round(Math.random() * 300)+300;
         ninja.y2 = ninja.y1 + NINJA_HEIGHT;
-        ninja.velY = -0.2;
+        ninja.velY = -0.2 + (Math.round(Math.random() * 0.1));
         ninja.velX = -0.3 - (Math.random() * 0.2) - (0.1 * gameNinja.level);
 
         ninja.refreshScaled();
@@ -129,7 +139,6 @@ var gameNinja = {
 
         for (i=0; i<= max; i++){
             var rnd = Math.round(Math.random() * (ninjas.length-1));
-            console.log("Ninja " + rnd);
             var ninja = ninjas.splice(rnd,1)[0];
             gameCommon.items.push(ninja);
         }
@@ -150,16 +159,17 @@ var gameNinja = {
     },
 
     checkPunch: function(ninja){
-        var x = (ninja.x1 + ninja.x2) / 2;
-        var y = (ninja.y1 + ninja.y2) / 2;
 
-        if (
-            ((x > 385) && (x < 885) && (y>320)) ||
-            ((x > 520) && (x < 760) && (y>50))
-            ){
-                return true;
-            }
-        return false;
+        return (
+            (ninja.x1 > 450 && ninja.x1 < 830 && ninja.y1 > 350) ||
+            (ninja.x2 > 450 && ninja.x2 < 830 && ninja.y1 > 350) ||
+            (ninja.x1 > 450 && ninja.x1 < 830 && ninja.y2 > 350) ||
+            (ninja.x2 > 450 && ninja.x2 < 830 && ninja.y2 > 350) ||
+            (ninja.x1 > 545 && ninja.x1 < 735 && ninja.y1 > 350) ||
+            (ninja.x2 > 545 && ninja.x2 < 735 && ninja.y1 > 350) ||
+            (ninja.x1 > 545 && ninja.x1 < 735 && ninja.y2 > 350) ||
+            (ninja.x2 > 545 && ninja.x2 < 735 && ninja.y2 > 350)
+        );
     },
 
     onUserMove: function(){
@@ -183,6 +193,11 @@ var gameNinja = {
                     ninja.velY = 0;
                     ninja.setActive(true);
                     gameNinja.score += 10;
+                } else if (ninja.y2 >= 675) {
+                    ninja.y1 >= 674 - NINJA_HEIGHT;
+                    ninja.y2 = 674;
+                    ninja.velY = - ninja.velY;
+                    ninja.refreshScaled();
                 }
 
 
@@ -207,11 +222,13 @@ var gameNinja = {
         gameNinja.levelTime -= delta;
         if (gameNinja.life <= 0) {
             gameCommon.drawText('YOU LOSE!');
+            gameCommon.items = [];
             gameNinja.status = 2;
             window.setTimeout(function(){gameCommon.startGame(gameMenu)}, 2000);
         }
         if (gameNinja.levelTime <= 0) {
             gameCommon.drawText('NEXT LEVEL!');
+            gameCommon.items = [];
             gameNinja.level++;
             gameNinja.status = 0;
             gameNinja.time = now;
