@@ -138,7 +138,6 @@ var gameCommon = {
     },
 
     drawItem: function(item){
-        //(new Date().getTime() - item.activeTime) > 3000)
         var img;
         if (item.active){
             img=item.imageActive;

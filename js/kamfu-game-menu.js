@@ -9,14 +9,14 @@ var gameMenu = {
         gameMenu.activeButton = null;
 
         gameCommon.playMusic("audio/music_intro.ogg");
-        var button = new Item(100, 100, 360, 355, 0, 0, document.getElementById("danceActive"), document.getElementById("danceInactive"), 'audio/dance.ogg', {game:gameDance});
+        var button = new Item(100, 75, 360, 330, 0, 0, document.getElementById("danceActive"), document.getElementById("danceInactive"), 'audio/dance.ogg', {game:gameDance});
         gameCommon.items.push(button);
 
-        button = new Item(920, 100, 1180, 355, 0, 0, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg', {game:gameNinja});
+        button = new Item(920, 75, 1180, 30, 0, 0, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg', {game:gameNinja});
         gameCommon.items.push(button);
 
 
-        button = new Item(100, 400, 360, 655, 0, 0, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/simon.ogg', {game:gameSimon});
+        button = new Item(100, 425, 360, 680, 0, 0, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/simon.ogg', {game:gameSimon});
         gameCommon.items.push(button);
 
     },
@@ -47,11 +47,24 @@ var gameMenu = {
     },
 
     gameLoop: function(delta){
-        if ((gameMenu.activeButton != null) &&
-            (new Date().getTime() - gameMenu.activeButton.activeTime) > 2000){
-                console.log("Ouch");
+        if (gameMenu.activeButton != null){
+            var time = (new Date().getTime() - gameMenu.activeButton.activeTime);
+            if (time > 2000){
                 gameCommon.playSound("audio/select.ogg");
                 gameCommon.startGame(gameMenu.activeButton.data.game);
+            } else {
+                var x = 1280 -gameMenu.activeButton.x2 + 130;
+                var y = gameMenu.activeButton.y1 + 127;
+                var percent = (time * 100) / 200000;
+
+                gameCommon.ctxBack.lineWidth=20;
+                gameCommon.ctxBack.strokeStyle = "#FFFF00";
+                gameCommon.ctxBack.beginPath();
+                gameCommon.ctxBack.arc(x, y, 160, 0, percent * 2 * Math.PI);
+                gameCommon.ctxBack.stroke();
+            }
+        } else {
+            gameCommon.ctxBack.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         }
     }
 }

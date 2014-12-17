@@ -49,6 +49,7 @@ var gameNinja = {
     },
 
     drawLife: function(){
+        gameCommon.ctxBack.lineWidth=1;
         gameCommon.ctxBack.fillStyle = "#FF0000";
         gameCommon.ctxBack.strokeRect(20,20,402,40);
 
