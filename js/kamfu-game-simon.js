@@ -33,6 +33,8 @@ var gameSimon = {
         gameSimon.buttons.push(button);
 
         gameSimon.sequence = [];
+        gameSimon.addSequence();
+        gameSimon.addSequence();
         gameSimon.index = 0;
 
         gameCommon.drawText('READY');
@@ -46,7 +48,7 @@ var gameSimon = {
             button.y2 = button.y2 + 40;
             button.refreshScaled();
             button.setActive(true);
-            window.setTimeout(function(){gameSimon.deactivateButton(button)}, 500);
+            window.setTimeout(function(){gameSimon.deactivateButton(button)}, 400);
         }
     },
 
@@ -97,18 +99,23 @@ var gameSimon = {
         window.setTimeout(gameSimon.computerTurn, 3000);
     },
 
-    computerTurn: function(){
-        gameCommon.clearText();
+    addSequence: function(){
         var num = Math.floor((Math.random() * 4));
         var button = gameSimon.buttons[num];
         gameSimon.sequence.push(button);
+    },
+
+    computerTurn: function(){
+        gameCommon.clearText();
+        gameSimon.addSequence();
         gameSimon.playSequence(0);
     },
 
     startUser: function(){
         gameSimon.status = 4;
         gameCommon.drawText("YOU");
-        window.setTimeout(function(){gameCommon.clearText(); gameSimon.status = 2;}, 1000);
+        gameSimon.status = 2;
+        window.setTimeout(function(){gameCommon.clearText();}, 1000);
         gameSimon.index = 0;
     },
 
@@ -127,9 +134,9 @@ var gameSimon = {
             gameCommon.playSound(button.sound);
             gameSimon.activateButton(button);
 
-            var time = 1000 - (gameSimon.sequence.length * 50);
-            if (time < 600) {
-                time = 600;
+            var time = 900 - (gameSimon.sequence.length * 50);
+            if (time < 500) {
+                time = 500;
             }
             window.setTimeout(function(){gameSimon.playSequence(index+1)}, time);
         }

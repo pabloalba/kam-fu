@@ -50,13 +50,13 @@ var gameMenu = {
     gameLoop: function(delta){
         if (gameMenu.activeButton != null){
             var time = (new Date().getTime() - gameMenu.activeButton.activeTime);
-            if (time > 2000){
+            if (time > 1000){
                 gameCommon.playSound("audio/select.ogg");
                 gameCommon.startGame(gameMenu.activeButton.data.game);
             } else {
                 var x = 1280 -gameMenu.activeButton.x2 + 130;
                 var y = gameMenu.activeButton.y1 + 127;
-                var percent = (time * 100) / 200000;
+                var percent = time / 1000;
 
                 gameCommon.ctxBack.lineWidth=20;
                 gameCommon.ctxBack.strokeStyle = "#FFFF00";
