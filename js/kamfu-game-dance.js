@@ -165,10 +165,14 @@ var gameDance = {
 
 
         gameCommon.ctxBack.fillStyle = "#FFFFFF";
-        var s = ""+Math.round((gameDance.audio.duration - gameDance.audio.currentTime));
-        if (s != "NaN") {
-            while (s.length < 3) s = "0" + s;
-            gameCommon.ctxBack.fillText(s, 555, 655);
+        if (gameDance.status == 2) {
+            var s = ""+Math.round((gameDance.audio.duration - gameDance.audio.currentTime));
+            if (s != "NaN") {
+                while (s.length < 3) s = "0" + s;
+                gameCommon.ctxBack.fillText(s, 555, 655);
+            }
+        } else {
+            gameCommon.ctxBack.fillText("000", 555, 655);
         }
     },
 
@@ -240,16 +244,18 @@ var gameDance = {
                                 var time = timeLast - mediumTime;
                                 gameDance.score += 80;
                                 if (time < -100) {
-                                    //NONE
+                                    gameDance.score += 10;
                                 } else if (time < -50) {
                                     gameCommon.drawText("SOON");
                                     gameDance.score -= (200-time);
                                 } else if (time < 50) {
                                     gameCommon.drawText("PERFECT");
                                     gameDance.score += 200;
-                                } else if (time < 200) {
+                                } else if (time < 190) {
                                     gameCommon.drawText("LATE");
                                     gameDance.score += (200-time);
+                                } else {
+                                    gameDance.score += 10;
                                 }
                                 window.setTimeout(gameCommon.clearText, 200);
                             }

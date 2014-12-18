@@ -194,8 +194,13 @@ var gameNinja = {
                     ninja.setActive(true);
                     gameNinja.score += 10;
                 } else if (ninja.y2 >= 675) {
-                    ninja.y1 >= 674 - NINJA_HEIGHT;
+                    ninja.y1 = 674 - NINJA_HEIGHT;
                     ninja.y2 = 674;
+                    ninja.velY = - ninja.velY;
+                    ninja.refreshScaled();
+                } else if (ninja.y1 <= 0) {
+                    ninja.y1 = 1;
+                    ninja.y2 = 1 + NINJA_HEIGHT;
                     ninja.velY = - ninja.velY;
                     ninja.refreshScaled();
                 }

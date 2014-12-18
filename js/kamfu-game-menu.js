@@ -15,11 +15,10 @@ var gameMenu = {
         button = new Item(920, 75, 1180, 330, 0, 0, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg', {game:gameNinja});
         gameCommon.items.push(button);
 
-
-        button = new Item(920, 425, 360, 680, 0, 0, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/simon.ogg', {game:gameSimon});
+        button = new Item(920, 425, 1180, 680, 0, 0, document.getElementById("simonActive"), document.getElementById("simonInactive"), 'audio/simon.ogg', {game:gameSimon});
         gameCommon.items.push(button);
 
-        button = new Item(100, 425, 1180, 680, 0, 0, document.getElementById("changeUserActive"), document.getElementById("changeUserInactive"), 'audio/changeUser.ogg', {game:null});
+        button = new Item(100, 425, 360, 680, 0, 0, document.getElementById("changeUserActive"), document.getElementById("changeUserInactive"), 'audio/changeUser.ogg', {game:null});
         gameCommon.items.push(button);
 
     },

@@ -96,7 +96,7 @@ var gameSimon = {
         gameSimon.status = 1;
         gameSimon.index = 0;
         gameCommon.drawText("COMPUTER");
-        window.setTimeout(gameSimon.computerTurn, 3000);
+        window.setTimeout(gameSimon.computerTurn, 2000);
     },
 
     addSequence: function(){
