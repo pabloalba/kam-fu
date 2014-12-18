@@ -165,10 +165,10 @@ var gameNinja = {
             (ninja.x2 > 450 && ninja.x2 < 830 && ninja.y1 > 350) ||
             (ninja.x1 > 450 && ninja.x1 < 830 && ninja.y2 > 350) ||
             (ninja.x2 > 450 && ninja.x2 < 830 && ninja.y2 > 350) ||
-            (ninja.x1 > 545 && ninja.x1 < 735 && ninja.y1 > 350) ||
-            (ninja.x2 > 545 && ninja.x2 < 735 && ninja.y1 > 350) ||
-            (ninja.x1 > 545 && ninja.x1 < 735 && ninja.y2 > 350) ||
-            (ninja.x2 > 545 && ninja.x2 < 735 && ninja.y2 > 350)
+            (ninja.x1 > 545 && ninja.x1 < 735 && ninja.y1 > 120) ||
+            (ninja.x2 > 545 && ninja.x2 < 735 && ninja.y1 > 120) ||
+            (ninja.x1 > 545 && ninja.x1 < 735 && ninja.y2 > 120) ||
+            (ninja.x2 > 545 && ninja.x2 < 735 && ninja.y2 > 120)
         );
     },
 
