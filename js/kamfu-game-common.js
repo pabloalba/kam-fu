@@ -73,6 +73,10 @@ var gameCommon = {
         gameCommon.ctxFront.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     },
 
+    clearBackContext: function(){
+        gameCommon.ctxBack.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    },
+
     clearup: function(){
         gameCommon.stopMusic();
         gameCommon.clearItems();

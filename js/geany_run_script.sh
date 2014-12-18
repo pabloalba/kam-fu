@@ -2,7 +2,7 @@
 
 rm $0
 
-./kamfu
+./kamfu-game-dance
 
 echo "
 
