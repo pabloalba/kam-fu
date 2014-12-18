@@ -12,7 +12,7 @@ var gameMenu = {
         var button = new Item(100, 75, 360, 330, 0, 0, document.getElementById("danceActive"), document.getElementById("danceInactive"), 'audio/dance.ogg', {game:gameDance});
         gameCommon.items.push(button);
 
-        button = new Item(920, 75, 1180, 30, 0, 0, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg', {game:gameNinja});
+        button = new Item(920, 75, 1180, 330, 0, 0, document.getElementById("ninjaActive"), document.getElementById("ninjaInactive"), 'audio/lee1.ogg', {game:gameNinja});
         gameCommon.items.push(button);
 
 
