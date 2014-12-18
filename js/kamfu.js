@@ -12,17 +12,4 @@ $(document).ready(function() {
 
     window.setTimeout(gameCommon.mainLoop, 100);
 
-
-
-    $( "body" ).click(function() {
-        if (gameCommon.currentGame == gameMenu) {
-            var r = confirm("Reset camera?");
-            if (r == true) {
-                gameCommon.clearup();
-                camera.initialized = false;
-                camera.startupTime = 0;
-            }
-        }
-    });
-
 });
